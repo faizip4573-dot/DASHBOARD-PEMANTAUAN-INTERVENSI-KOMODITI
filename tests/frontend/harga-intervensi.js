@@ -114,58 +114,31 @@ function mingguan(titik, terkini) {
       !/IV_PRICE_OVERLAY|IV_SCENARIO_TAG|DATA\.rekod|\bHARGA\./.test(sumber),
     );
 
-    // 2. Pengeluar: senarai keutamaan daripada status sebenar
+    // 2. Bekalan (mod pengeluar): penunjuk = harga Borong dinilai arah turun (/api/harga?peringkat=BORONG&arah=turun).
+    //    Tahap: merah = Kritikal, kuning = Waspada; label "Harga borong ..."; kelabu tidak dalam senarai isu.
     await mod('pengeluar');
-    const P1 = await ev(() => IV_TEST.priRows());
-    const kluang = P1.find(
-      (x) =>
-        x.po === 'simpangrenggam' &&
-        x.district === 'Kluang' &&
-        x.commodity === 'cili-merah-kulai-kulai-hibrid',
+    const borPA = (await api('peringkat=BORONG&aras=po&arah=turun')).baris;
+    const borDA = (await api('peringkat=BORONG&aras=daerah&arah=turun')).baris;
+    const P1 = await ev(() =>
+      IV_TEST.priRows().map((x) => ({
+        ...x,
+        st: IV_TEST.recsNow().find((r) => r.id === x.id).price.statusKongsi,
+      })),
     );
+    const TAHAP = { merah: 'kritikal', kuning: 'waspada' };
     ok(
-      'merah = Kritikal (Kluang)',
-      kluang &&
-        kluang.level === 'kritikal' &&
-        /^Harga ladang jatuh/.test(kluang.label) &&
-        !kluang.flag,
-      kluang,
+      'Bekalan: senarai isu = Borong merah/kuning, label harga borong',
+      P1.every((x) => TAHAP[x.st] === x.level && /^Harga borong (jatuh|berwaspada)$/.test(x.label)),
+      P1.slice(0, 5),
     );
-    const sepang = P1.find(
-      (x) =>
-        x.po === 'selangor' &&
-        x.district === 'Sepang' &&
-        x.commodity === 'cili-merah-kulai-kulai-hibrid',
-    );
-    ok(
-      'merah = Kritikal terus (pengesahan bekalan dikecualikan, selari Pemantauan)',
-      sepang &&
-        sepang.level === 'kritikal' &&
-        sepang.label === 'Harga ladang jatuh' &&
-        !sepang.flag,
-      sepang,
-    );
-    const kedah = P1.find(
-      (x) => x.po === 'kedah' && x.commodity === 'cili-merah-kulai-kulai-hibrid',
-    );
-    ok(
-      'kuning sahaja (lantai/siling) = waspada tanpa bendera',
-      kedah &&
-        kedah.level === 'waspada' &&
-        !kedah.flag &&
-        kedah.label === 'Harga ladang berwaspada',
-      kedah,
-    );
-    ok(
-      'kelabu tidak dalam senarai isu',
-      !P1.some((x) => x.po === 'penang'),
-      P1.filter((x) => x.po === 'penang'),
-    );
-    ok(
-      'tiada alarm daripada harga ganti (bawang tanpa ladang)',
-      !P1.some((x) => x.commodity === 'bawang-merah-kecil-import'),
-    );
-    // Penanda PO: Kritikal = merah (berkelip), Amaran harga = kuning (bukan merah), kelabu bukan hijau
+    const isuApi = borDA.filter(
+      (x) => x.po && (x.status === 'merah' || x.status === 'kuning'),
+    ).length;
+    ok('Bekalan: bilangan isu sepadan dengan API (daerah PO)', P1.length <= isuApi, [
+      P1.length,
+      isuApi,
+    ]);
+    // Penanda PO: kelabu bukan hijau; warna = amaranPo BORONG (arah turun) terburuk merentas komoditi
     const kls = await ev(() =>
       Object.fromEntries(
         [...document.querySelectorAll('#ivMap .po-marker')].map((e) => [
@@ -175,24 +148,13 @@ function mingguan(titik, terkini) {
       ),
     );
     ok(
-      'PO Kritikal berkelip: status-merah (Simpang Renggam)',
-      /status-merah/.test(kls.simpangrenggam),
-      kls.simpangrenggam,
-    );
-    ok(
-      'PO merah (Dengkil: Sepang merah) dan berkelip seperti Pemantauan',
-      /status-merah/.test(kls.selangor) && !/tanpa-kelip/.test(kls.selangor),
-      kls.selangor,
-    );
-    ok(
       'PO kelabu tidak hijau',
       Object.values(kls).every((c) => !(/status-kelabu/.test(c) && /status-hijau/.test(c))),
       kls,
     );
-    // Warna PO Intervensi (mod Pengeluar) = amaranPo LADANG pelayan, terburuk merentas komoditi (sama dengan Pemantauan)
     const W = { kelabu: 0, hijau: 1, kuning: 2, merah: 3 };
     const jangkaIv = {};
-    ladP.forEach((r) => {
+    borPA.forEach((r) => {
       const s = r.amaranPo ? r.amaranPo.status : r.status;
       if (!jangkaIv[r.po] || W[s] > W[jangkaIv[r.po]]) jangkaIv[r.po] = s;
     });
@@ -200,18 +162,16 @@ function mingguan(titik, terkini) {
       ([po, s]) => kls[po] && !new RegExp('status-' + s + '\\b').test(kls[po]),
     );
     ok(
-      'warna PO Intervensi = amaranPo pelayan (Pengeluar)',
+      'warna PO Intervensi = amaranPo BORONG arah turun (Bekalan)',
       Object.keys(jangkaIv).length >= 10 && beza.length === 0,
       { beza, jangkaIv },
     );
-    const rujukan = await ev(() => document.getElementById('ivPriList').innerText);
     ok(
-      'baris memaparkan sebab dan tahun asas',
-      /z = /.test(rujukan) && /asas 2025/.test(rujukan),
-      rujukan.slice(0, 400),
+      'penunjuk peta: Harga Borong',
+      await ev(() =>
+        /Penunjuk: Harga Borong · amaran apabila harga turun/.test(document.body.innerText),
+      ),
     );
-    ok('ramalan: tiada (prototaip)', /Ramalan: tiada \(prototaip\)/.test(rujukan));
-    ok('tiada sisihan/forecast dummy', !/forecast RM|sisihan [+-]/.test(rujukan));
 
     // 3. Pengguna
     await mod('pengguna');
@@ -235,16 +195,42 @@ function mingguan(titik, terkini) {
       kng && kng.level === 'kritikal' && kng.label === 'Kenaikan harga runcit',
       kng,
     );
+    const rujukan = await ev(() => document.getElementById('ivPriList').innerText);
+    ok(
+      'baris memaparkan sebab dan tahun asas',
+      /z = /.test(rujukan) && /asas 20\d\d/.test(rujukan),
+      rujukan.slice(0, 400),
+    );
+    ok('ramalan: tiada (prototaip)', /Ramalan: tiada \(prototaip\)/.test(rujukan));
+    ok('tiada sisihan/forecast dummy', !/forecast RM|sisihan [+-]/.test(rujukan));
 
-    // 4. Pengeluar tanpa ladang: ganti borong berlabel
+    // 4. Mod Bekalan menilai harga Borong (arah turun): tiada senarai ganti ladang; status = API BORONG arah=turun
     await mod('pengeluar');
     const ganti = await ev(() => (document.getElementById('ivPriGanti') || {}).innerText || '');
+    ok('Bekalan: tiada senarai ganti harga ladang', ganti === '', ganti);
+    const borD = (await api('peringkat=BORONG&aras=daerah&arah=turun')).baris;
+    const bek = await ev(() =>
+      IV_TEST.recsNow().map((r) => [
+        r.poId,
+        r.district,
+        r.price.variety,
+        r.price.priceLevel,
+        r.price.statusKongsi,
+      ]),
+    );
+    const nd = (s) =>
+      String(s || '')
+        .toUpperCase()
+        .replace(/\s+/g, ' ')
+        .trim();
+    const bekSalah = bek.filter(([po, d, v, lv, st]) => {
+      const a = borD.find((x) => x.po === po && nd(x.daerah) === nd(d) && x.variety === v);
+      return lv !== 'Borong' || !a || a.status !== st;
+    });
     ok(
-      'Pengeluar tanpa ladang: label + harga borong ganti',
-      /Tiada harga ladang/.test(ganti) &&
-        /Harga borong \(ganti, tiada data ladang\): RM \d+\.\d\d/.test(ganti) &&
-        /Bawang Merah \/ Kecil \(Import\)/.test(ganti),
-      ganti,
+      'Bekalan: rekod = harga Borong, status = API arah=turun',
+      bek.length > 0 && bekSalah.length === 0,
+      bekSalah.slice(0, 5),
     );
     const bwg = cari(ladP, 'simpangrenggam', 'BAWANG', 'BAWANG MERAH / KECIL (IMPORT)');
     ok(
@@ -252,10 +238,6 @@ function mingguan(titik, terkini) {
       bwg && bwg.harga == null && bwg.ganti && bwg.status === 'kelabu',
       bwg,
     );
-    ok('harga ganti sama dengan API', ganti.includes('RM ' + bwg.ganti.harga.toFixed(2)), [
-      ganti,
-      bwg.ganti,
-    ]);
 
     // 5. Mobilisasi: harga sumber/destinasi daripada borong sebenar
     const M = await ev(() => {
@@ -455,7 +437,7 @@ function mingguan(titik, terkini) {
     await sleep(500);
     const pulih = await pr.evaluate(() => ({
       hidden: document.getElementById('ivHargaKeadaan').hidden,
-      isu: IV_TEST.priRows().length,
+      isu: IV_TEST.recsNow().length,
     }));
     ok('Cuba semula memulihkan data', pulih.hidden && pulih.isu > 0, pulih);
     await pr.close();

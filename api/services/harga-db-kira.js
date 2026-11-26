@@ -507,8 +507,11 @@ function harianSiri(entri) {
     .map(([t, [s, n, nb]]) => ({ t, h: bulat(s / n, 4), n: nb }));
 }
 
+// `arah` (pilihan, BORONG sahaja): 'turun' menilai BORONG seperti Pengeluar (amaran bila harga turun, lantai),
+// 'naik' seperti Pengguna (amaran bila harga naik, siling). Tanpa `arah`, BORONG kekal pembanding (kelabu).
+const ARAH_MOD = { turun: 'pengeluar', naik: 'pengguna' };
 function kiraBaris(idx, ambIdx, p, f, params, cfg) {
-  const mod = PERINGKAT_MOD[p] || null;
+  const mod = PERINGKAT_MOD[p] || (p === 'BORONG' && ARAH_MOD[params.arah]) || null;
   const T = idx.tarikhTerkini[p];
   if (!T) return [];
   const minggu = pilihMinggu(T, { bulan: params.bulan, minggu: params.minggu }, idx.tarikhAda[p]);
@@ -840,6 +843,7 @@ function sahkanParam(sp) {
     'aras',
     'mod',
     'siri',
+    'arah',
   ]);
   const n = {};
   for (const k of sp.keys()) {
@@ -884,6 +888,11 @@ function sahkanParam(sp) {
   if (minggu !== null) {
     if (!tarikhSah(minggu)) return { ralat: 'Parameter minggu tidak sah; guna format YYYY-MM-DD' };
     n.minggu = minggu;
+  }
+  const arah = get('arah');
+  if (arah !== null) {
+    if (!ARAH_MOD[arah]) return { ralat: 'Parameter arah tidak sah; guna turun atau naik' };
+    n.arah = arah;
   }
   const siri = get('siri');
   if (siri !== null) {

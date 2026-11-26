@@ -33,17 +33,19 @@ const ok = (nama, cond, info) => {
   const konsol = [];
   try {
     // Sumber kebenaran: baris /api/harga (lima pertanyaan yang sama dengan kedua-dua tab).
-    const [ladP, ladD, runP, runD, borP] = await Promise.all([
+    // Intervensi mod Bekalan menilai BORONG dengan arah turun (arah=turun); Pemantauan kekal LADANG/RUNCIT.
+    const [ladP, ladD, runP, runD, borP, borD] = await Promise.all([
       api('mod=pengeluar&aras=po'),
       api('mod=pengeluar&aras=daerah'),
       api('peringkat=RUNCIT&aras=po'),
       api('peringkat=RUNCIT&aras=daerah'),
-      api('peringkat=BORONG&aras=po'),
+      api('peringkat=BORONG&aras=po&arah=turun'),
+      api('peringkat=BORONG&aras=daerah&arah=turun'),
     ]);
     const API = {
       LADANG: { po: ladP.baris, daerah: ladD.baris },
       RUNCIT: { po: runP.baris, daerah: runD.baris },
-      BORONG: { po: borP.baris },
+      BORONG: { po: borP.baris, daerah: borD.baris },
     };
     laporan.semakan.barisApi = {
       ladangPO: ladP.baris.length,
@@ -92,7 +94,7 @@ const ok = (nama, cond, info) => {
         if (p.source !== 'db-harga') salah.push(nama + ' sumber ' + p.source);
       };
       ['pengeluar', 'pengguna'].forEach((m) => {
-        const pr = m === 'pengeluar' ? 'LADANG' : 'RUNCIT';
+        const pr = m === 'pengeluar' ? 'BORONG' : 'RUNCIT';
         IV_TEST.dispatch('setMode', m);
         IV_TEST.recsNow().forEach((r) => {
           const a = API[pr].daerah.find(
@@ -141,7 +143,9 @@ const ok = (nama, cond, info) => {
 
     // 2. Paparan DOM: baris keutamaan Intervensi lawan baris harga Pemantauan untuk rekod yang sama.
     const semua = [];
-    for (const mode of ['pengeluar', 'pengguna']) {
+    // Hanya mod Pasaran (Runcit) dibandingkan dengan Pemantauan: mod Bekalan kini menilai harga Borong, yang di
+    // Pemantauan ialah pembanding (kelabu), jadi status tidak setara.
+    for (const mode of ['pengguna']) {
       await ev((m) => {
         IV_TEST.dispatch('resetFilters');
         IV_TEST.dispatch('setMode', m);

@@ -51,7 +51,7 @@
   const IV_CONFIG = {
     refNow: '2026-11-15T12:00:00+08:00',
     thresholds: {
-      pengeluar: { direction: 'turun', warnPct: -8, critPct: -15, stage: 'Ladang' },
+      pengeluar: { direction: 'turun', warnPct: -8, critPct: -15, stage: 'Borong' },
       pengguna: { direction: 'naik', warnPct: 8, critPct: 15, stage: 'Runcit' },
     },
     supply: { minSurplusMT: 3, minSurplusRatio: 0.15, shortageCoverage: 0.8, staleHours: 72 },
@@ -371,7 +371,9 @@
     ['daerah', 'LADANG', { mod: 'pengeluar', aras: 'daerah' }],
     ['po', 'RUNCIT', { peringkat: 'RUNCIT', aras: 'po' }],
     ['daerah', 'RUNCIT', { peringkat: 'RUNCIT', aras: 'daerah' }],
-    ['po', 'BORONG', { peringkat: 'BORONG', aras: 'po' }],
+    // BORONG dinilai dengan arah turun (mod Bekalan): status/amaranPo seperti Pengeluar, tetapi pada harga borong
+    ['po', 'BORONG', { peringkat: 'BORONG', aras: 'po', arah: 'turun' }],
+    ['daerah', 'BORONG', { peringkat: 'BORONG', aras: 'daerah', arah: 'turun' }],
     ['po_tambahan', 'BORONG', { peringkat: 'BORONG', aras: 'po_tambahan' }],
   ];
   const IVH = {
@@ -753,7 +755,8 @@
     kritikal: 'Kritikal',
     tiada: 'Tiada ambang',
   };
-  const MODE_STAGE = { pengeluar: 'Ladang', pengguna: 'Runcit' };
+  // Penunjuk harga setiap mod: Bekalan = harga Borong (turun), Pasaran = harga Runcit (naik)
+  const MODE_STAGE = { pengeluar: 'Borong', pengguna: 'Runcit' };
   const _recCache = {};
   function computeRecs(mode) {
     if (!IVH.sedia) return [];
@@ -1318,10 +1321,10 @@
       ? 'Amaran harga'
       : r.cls.priceLevel === 'kritikal'
         ? m === 'pengeluar'
-          ? 'Harga ladang jatuh'
+          ? 'Harga borong jatuh'
           : 'Kenaikan harga runcit'
         : m === 'pengeluar'
-          ? 'Harga ladang berwaspada'
+          ? 'Harga borong berwaspada'
           : 'Harga runcit berwaspada';
     return base; // pengesahan bekalan dikecualikan
   }
@@ -2140,7 +2143,7 @@
     $i('ivModePengguna').setAttribute('aria-selected', String(s.selectedMode === 'pengguna'));
     $i('ivMapHint').textContent =
       s.selectedMode === 'pengeluar'
-        ? 'Penunjuk: Harga Ladang · amaran apabila harga turun'
+        ? 'Penunjuk: Harga Borong · amaran apabila harga turun'
         : 'Penunjuk: Harga Runcit · amaran apabila harga naik';
     $i('ivMapBack').hidden = !s.selectedPOId;
     const cnt = { normal: 0, waspada: 0, kritikal: 0, tiada: 0 };
@@ -2541,7 +2544,7 @@
     const shown = s.ui.showAll ? rows : rows.slice(0, 12);
     $i('ivPriChips').innerHTML =
       chip('Mod: ' + modeLbl(s.selectedMode), 'info') +
-      chip('Harga ' + (s.selectedMode === 'pengeluar' ? 'Ladang' : 'Runcit'), 'grey') +
+      chip('Harga ' + (s.selectedMode === 'pengeluar' ? 'Borong' : 'Runcit'), 'grey') +
       chip(rows.length + ' isu', rows.length ? 'warn' : 'ok') +
       (IVH.sedia
         ? chip('Tiada ambang ' + recsNow().filter((r) => r.cls.noThreshold).length, 'grey')
@@ -2578,7 +2581,8 @@
     foot += 'Skor ialah indeks keutamaan prototaip, bukan kebarangkalian.';
     foot +=
       ' Harga sebenar (DB Harga), minggu ISO lengkap terkini, sama dengan Pemantauan; bekalan, stok dan logistik ialah data dummy.';
-    foot += ivGantiHTML();
+    // Ganti borong untuk Pengeluar tanpa harga ladang tidak lagi relevan: mod Bekalan menilai harga borong terus
+    if (MODE_STAGE.pengeluar === 'Ladang') foot += ivGantiHTML();
     $i('ivPriFoot').innerHTML = foot;
   }
 
