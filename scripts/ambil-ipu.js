@@ -1,6 +1,6 @@
 'use strict';
 // Ambil data kualiti udara (IPU, JAS MyEQMS) dan tulis cache. Jalankan: npm run ipu:ambil
-const { segar } = require('../api/services/kualiti-udara.js');
+const { segar } = require('../api/_services/kualiti-udara.js');
 
 const baris = (nama, s) => `${nama}: ${s.status}${s.mesej ? ' - ' + s.mesej : ''}`;
 

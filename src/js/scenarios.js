@@ -10,7 +10,7 @@ let amsFitted = false; // true jika peta digerakkan oleh panel ini
 let amsListSig = '',
   amsDetailSig = '';
 
-/* --- Senario dijana di pelayan: cuaca (api/services/cuaca.js) dan banjir (api/services/banjir.js, JPS). --- */
+/* --- Senario dijana di pelayan: cuaca (api/_services/cuaca.js) dan banjir (api/_services/banjir.js, JPS). --- */
 const WARNING_LABELS = {
   hujan_berterusan: 'Hujan berterusan',
   hujan_lebat: 'Hujan lebat',
@@ -21,7 +21,7 @@ const RISK_LABELS = { sederhana: 'Sederhana', tinggi: 'Tinggi' };
 const COMMODITY_PRICE_MAP = { 'Cili Merah': 'Cili Merah', Tomato: 'Tomato Bulat' }; // komoditi senario -> komoditi harga sedia ada
 
 /* --- Lapisan servis ---
-   MET Malaysia + Open-Meteo -> pelayan (api/services/cuaca.js) -> senario -> /api/cuaca -> dashboard.
+   MET Malaysia + Open-Meteo -> pelayan (api/_services/cuaca.js) -> senario -> /api/cuaca -> dashboard.
    Tiada kunci API di pelayar; pelayar hanya memanggil /api/cuaca (same-origin) melalui CUACA.load().
    Banjir: /api/banjir melalui BANJIR.load(). Senario banjir hanya dibenarkan daripada sumber rasmi (dataStatus 'rasmi', sumber JPS). */
 const ScenarioService = {

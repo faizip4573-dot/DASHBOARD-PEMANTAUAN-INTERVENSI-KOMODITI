@@ -26,7 +26,7 @@ function portBebas() {
 }
 async function mula(env) {
   const port = await portBebas();
-  const child = spawn(process.execPath, ['api/server.js'], {
+  const child = spawn(process.execPath, ['api/_server.js'], {
     cwd: ROOT,
     env: {
       ...process.env,

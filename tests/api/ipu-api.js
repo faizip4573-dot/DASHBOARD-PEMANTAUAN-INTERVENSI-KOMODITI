@@ -5,9 +5,9 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
-const ipu = require('../../api/services/kualiti-udara.js');
-const util = require('../../api/services/util-rangkaian.js');
-const { muatPO } = require('../../api/services/cuaca.js');
+const ipu = require('../../api/_services/kualiti-udara.js');
+const util = require('../../api/_services/util-rangkaian.js');
+const { muatPO } = require('../../api/_services/cuaca.js');
 const { buatFixtureIPU, pasangCacheIPU } = require('../helpers/banjir-fixture.js');
 
 const DIR = path.join(__dirname, '..', 'fixtures');
@@ -307,7 +307,7 @@ const PO1 = { id: 'p', nama: 'PO P', negeri: 'Selangor', lat: 3, lon: 101 };
   });
 
   /* --- API --- */
-  const server = require('../../api/server.js');
+  const server = require('../../api/_server.js');
   const fixtureFile = pasangCacheIPU();
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
   const base = `http://127.0.0.1:${server.address().port}`;

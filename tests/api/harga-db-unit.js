@@ -5,8 +5,8 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const kira = require('../../api/services/harga-db-kira.js');
-const hargaDb = require('../../api/services/harga-db.js');
+const kira = require('../../api/_services/harga-db-kira.js');
+const hargaDb = require('../../api/_services/harga-db.js');
 
 const DIR = path.join(__dirname, '..', 'fixtures', 'harga-db');
 const baca = (n) => JSON.parse(fs.readFileSync(path.join(DIR, n), 'utf8'));
@@ -896,7 +896,7 @@ ok(
 );
 
 /* --- Senarai putih komoditi (config/komoditi-diliputi.json) --- */
-const diliputi = require('../../api/services/komoditi-diliputi.js');
+const diliputi = require('../../api/_services/komoditi-diliputi.js');
 ok('komoditi-diliputi: konfigurasi dimuat (58 pasangan, 17 jenis A-Z, 3 tiadaData)', () => {
   const s = diliputi.muat();
   assert.strictEqual(s.pasangan.length, 58);

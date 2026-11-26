@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const skrip = require('../../scripts/ambil-pemetaan-po-pbi.js');
-const pem = require('../../api/services/pemetaan-po.js');
+const pem = require('../../api/_services/pemetaan-po.js');
 const { terap } = require('../../src/data/pemetaan-po-terap.js');
 
 const ROOT = path.join(__dirname, '..', '..');

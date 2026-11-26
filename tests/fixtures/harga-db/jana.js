@@ -6,7 +6,7 @@
 // (dijana melalui binaDariBaris, kod yang sama dengan sync sebenar).
 const fs = require('node:fs');
 const path = require('node:path');
-const hargaDb = require('../../../api/services/harga-db.js');
+const hargaDb = require('../../../api/_services/harga-db.js');
 
 const BULAT = (x, d = 3) => Math.round(x * 10 ** d) / 10 ** d;
 const SEKARANG = '2026-11-12T00:00:00.000Z';

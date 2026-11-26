@@ -1,8 +1,8 @@
 'use strict';
-// Ujian enjin Harga Cadangan PSI (api/services/psi-kira.js): contoh kerja Seksyen 9 dan senarai semak Seksyen 10
+// Ujian enjin Harga Cadangan PSI (api/_services/psi-kira.js): contoh kerja Seksyen 9 dan senarai semak Seksyen 10
 // dalam Prompt_Dashboard_Harga_Cadangan_PSI.md. Tiada rangkaian. Jalankan: node --no-warnings tests/api/psi-unit.js
 const assert = require('node:assert');
-const P = require('../../api/services/psi-kira.js');
+const P = require('../../api/_services/psi-kira.js');
 
 const senarai = [];
 const ok = (nama, fn) => senarai.push([nama, fn]);

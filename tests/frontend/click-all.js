@@ -4,7 +4,7 @@
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const server = require('../../api/server.js');
+const server = require('../../api/_server.js');
 require('../helpers/banjir-fixture.js').pasangSemuaCache(); // cuaca, banjir dan IPU deterministik, tidak bergantung pada cache tempatan
 const puppeteer = require(
   path.resolve(__dirname, '../../.agents/tasks/bt/node_modules/puppeteer-core'),

@@ -3,7 +3,7 @@
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const cuaca = require('../../api/services/cuaca.js');
+const cuaca = require('../../api/_services/cuaca.js');
 
 function hariMYT(tambah = 0) {
   const d = new Date(Date.now() + tambah * 864e5);

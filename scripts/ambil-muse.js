@@ -1,6 +1,6 @@
 'use strict';
 // Ambil berita AI Muse (Google Drive, db-curated) secara tokokan dan tulis cache. Jalankan: npm run muse:ambil
-const { segar } = require('../api/services/muse.js');
+const { segar } = require('../api/_services/muse.js');
 segar()
   .then(({ data, ditulis, statistik: s }) => {
     const bil = (st) => data.folder.filter((f) => f.status === st).length;

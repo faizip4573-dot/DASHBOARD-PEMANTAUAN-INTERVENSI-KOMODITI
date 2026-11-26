@@ -4,7 +4,7 @@
 const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
-const g = require('../../api/services/grid-cuaca.js');
+const g = require('../../api/_services/grid-cuaca.js');
 
 const FX = (n) => JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'fixtures', n), 'utf8'));
 

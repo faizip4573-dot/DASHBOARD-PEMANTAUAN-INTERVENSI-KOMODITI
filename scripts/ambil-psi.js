@@ -1,6 +1,6 @@
 ﻿'use strict';
 // Ambil siri bulanan untuk Harga Cadangan PSI (Prompt_Dashboard_Harga_Cadangan_PSI.md) dan tulis
-// data/processed/psi-bulanan.json (diabaikan git). Pelayan hanya membaca fail ini (api/services/psi.js).
+// data/processed/psi-bulanan.json (diabaikan git). Pelayan hanya membaca fail ini (api/_services/psi.js).
 //   AMI   : DB Harga (Supabase) harga_ladang_mingguan / harga_borong_mingguan -> purata bulanan setiap PO utama
 //           (purata harian daerah -> purata PO harian -> purata bulan; hierarki sama dengan dashboard)
 //   FIS   : Power BI FIS Version 2.1, jadual Master, Sumber = FIS, Peringkat LADANG (Belian) / BORONG (Jualan);
@@ -10,10 +10,10 @@
 // Rahsia (.env: DB_HARGA_*, PBI_*) tidak dicetak. Guna: npm run psi:ambil
 const fs = require('node:fs');
 const path = require('node:path');
-const util = require('../api/services/util-rangkaian.js');
-const kira = require('../api/services/harga-db-kira.js');
-const hargaDb = require('../api/services/harga-db.js');
-const psiKira = require('../api/services/psi-kira.js');
+const util = require('../api/_services/util-rangkaian.js');
+const kira = require('../api/_services/harga-db-kira.js');
+const hargaDb = require('../api/_services/harga-db.js');
+const psiKira = require('../api/_services/psi-kira.js');
 
 const ROOT = path.join(__dirname, '..');
 const FAIL_OUT = process.env.PSI_FILE || path.join(ROOT, 'data', 'processed', 'psi-bulanan.json');

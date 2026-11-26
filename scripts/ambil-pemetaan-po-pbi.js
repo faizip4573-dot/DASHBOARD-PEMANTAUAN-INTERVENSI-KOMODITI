@@ -5,7 +5,7 @@
 // Guna: npm run po:ambil   (pilihan: --mentah untuk mencetak nilai Negeri mentah)
 const fs = require('node:fs');
 const path = require('node:path');
-const { normDaerahDb } = require('../api/services/pemetaan-po.js');
+const { normDaerahDb } = require('../api/_services/pemetaan-po.js');
 
 const ROOT = path.join(__dirname, '..');
 const FAIL_CONFIG = path.join(ROOT, 'config', 'pemetaan-po-fis.json');

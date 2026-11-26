@@ -1,6 +1,6 @@
 'use strict';
 // Ambil siklon tropika aktif (GDACS) dan tulis cache. Jalankan: npm run siklon:ambil
-const { segar } = require('../api/services/siklon.js');
+const { segar } = require('../api/_services/siklon.js');
 segar()
   .then(({ data, ditulis }) => {
     console.log(`fetchedAt: ${data.fetchedAt}`);

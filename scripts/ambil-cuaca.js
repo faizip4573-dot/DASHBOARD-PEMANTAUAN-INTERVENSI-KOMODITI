@@ -1,6 +1,6 @@
 'use strict';
 // Ambil data cuaca (MET Malaysia + Open-Meteo) dan tulis cache. Jalankan: npm run cuaca:ambil
-const { segar } = require('../api/services/cuaca.js');
+const { segar } = require('../api/_services/cuaca.js');
 
 segar()
   .then(({ data, ditulis }) => {

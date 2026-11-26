@@ -5,7 +5,7 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
-const dg = require('../../api/services/amaran-datagov.js');
+const dg = require('../../api/_services/amaran-datagov.js');
 const { buatFixture, pasangCache } = require('../helpers/cuaca-fixture.js');
 const { pasangCacheAmaranDG } = require('../helpers/banjir-fixture.js');
 const MENTAH = JSON.parse(
@@ -109,7 +109,7 @@ function get(base, p) {
   });
 
   // Endpoint
-  const server = require('../../api/server.js');
+  const server = require('../../api/_server.js');
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
   const base = `http://127.0.0.1:${server.address().port}`;
   try {

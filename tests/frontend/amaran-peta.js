@@ -9,7 +9,7 @@
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const server = require('../../api/server.js');
+const server = require('../../api/_server.js');
 const { buatFixture } = require('../helpers/cuaca-fixture.js');
 const { buatFixtureBanjir, pasangSemuaCache } = require('../helpers/banjir-fixture.js');
 const { stubApi } = require('../helpers/api-stub.js');
