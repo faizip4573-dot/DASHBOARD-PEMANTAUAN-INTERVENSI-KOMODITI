@@ -2961,7 +2961,7 @@
     const tkh = pr && pr.minggu && pr.minggu.akhir;
     return `<div class="iv-mr-harga"><div class="iv-mr-harga-l">${E(label)}</div><div class="iv-mr-harga-v">${ada ? `RM ${pr.actual.toFixed(2)} <small>${E(unit)}</small>` : '<span class="iv-mr-kosong">Tiada data</span>'}</div>${tkh ? `<span class="iv-mr-tkh" title="${E(pr.windowLabel || '')}">&#8635; ${E(blnLabel(tkh))}</span>` : ''}</div>`;
   }
-  // Harga Cadangan PSI daripada /api/psi (enjin pelayan api/services/psi-kira.js; formula
+  // Harga Cadangan PSI daripada /api/psi (enjin pelayan api/_services/psi-kira.js; formula
   // Prompt_Dashboard_Harga_Cadangan_PSI.md). Klien hanya memaparkan; tiada kiraan semula.
   const PSI = { data: new Map(), memuat: new Set(), ralat: new Map() };
   function psiAmbil(po, variety) {

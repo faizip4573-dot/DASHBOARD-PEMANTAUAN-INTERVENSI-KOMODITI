@@ -14,7 +14,7 @@
       .toLowerCase()
       .replace(/(^|\s)([a-z])/g, (m, a, b) => a + b.toUpperCase());
   const NEGERI_PAPAR = { 'KUALA LUMPUR': 'SELANGOR', PUTRAJAYA: 'SELANGOR', LABUAN: 'SABAH' };
-  // Nama daerah FIS -> nama DB Harga (sama dengan api/services/pemetaan-po.js)
+  // Nama daerah FIS -> nama DB Harga (sama dengan api/_services/pemetaan-po.js)
   function dbNama(nama, aliasDb) {
     const n = besar(nama)
       .replace(/[.()]/g, ' ')

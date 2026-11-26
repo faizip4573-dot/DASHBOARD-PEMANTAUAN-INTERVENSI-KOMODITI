@@ -1,5 +1,5 @@
 'use strict';
-// Pelayan statik + API kecil tanpa dependensi. Jalankan: node api/server.js
+// Pelayan statik + API kecil tanpa dependensi. Jalankan: node api/_server.js
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -35,17 +35,17 @@ const MIME = {
 };
 
 const { CSP } = require('../config/security.js');
-const cuaca = require('./services/cuaca.js');
-const banjir = require('./services/banjir.js');
-const kualitiUdara = require('./services/kualiti-udara.js');
-const muse = require('./services/muse.js');
-const hargaDb = require('./services/harga-db.js');
-const psi = require('./services/psi.js');
-const amaranDG = require('./services/amaran-datagov.js');
-const gridCuaca = require('./services/grid-cuaca.js');
-const radar = require('./services/radar.js');
-const satelit = require('./services/satelit.js');
-const siklon = require('./services/siklon.js');
+const cuaca = require('./_services/cuaca.js');
+const banjir = require('./_services/banjir.js');
+const kualitiUdara = require('./_services/kualiti-udara.js');
+const muse = require('./_services/muse.js');
+const hargaDb = require('./_services/harga-db.js');
+const psi = require('./_services/psi.js');
+const amaranDG = require('./_services/amaran-datagov.js');
+const gridCuaca = require('./_services/grid-cuaca.js');
+const radar = require('./_services/radar.js');
+const satelit = require('./_services/satelit.js');
+const siklon = require('./_services/siklon.js');
 
 const SECURITY_HEADERS = {
   'Content-Security-Policy': CSP + "; frame-ancestors 'none'",

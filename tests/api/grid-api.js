@@ -12,8 +12,8 @@ const KUNCI = 'KUNCI_RAHSIA_UJIAN_9f3a';
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'grid-api-'));
 process.env.GRID_AUTO = '0';
 process.env.OPEN_METEO_API_KEY = KUNCI;
-const gridCuaca = require('../../api/services/grid-cuaca.js');
-const server = require('../../api/server.js');
+const gridCuaca = require('../../api/_services/grid-cuaca.js');
+const server = require('../../api/_server.js');
 
 // ---- stub Open-Meteo ----
 const cfg = {};

@@ -5,8 +5,8 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
-const banjir = require('../../api/services/banjir.js');
-const util = require('../../api/services/util-rangkaian.js');
+const banjir = require('../../api/_services/banjir.js');
+const util = require('../../api/_services/util-rangkaian.js');
 const { buatFixtureBanjir, pasangCacheBanjir } = require('../helpers/banjir-fixture.js');
 
 const DIR = path.join(__dirname, '..', 'fixtures');
@@ -554,7 +554,7 @@ function risiko(stesenWL, opts = {}) {
   });
 
   /* --- API --- */
-  const server = require('../../api/server.js');
+  const server = require('../../api/_server.js');
   const fixtureFile = pasangCacheBanjir();
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
   const base = `http://127.0.0.1:${server.address().port}`;

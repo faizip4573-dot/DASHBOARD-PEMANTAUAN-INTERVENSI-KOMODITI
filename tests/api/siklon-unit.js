@@ -4,7 +4,7 @@
 const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
-const sk = require('../../api/services/siklon.js');
+const sk = require('../../api/_services/siklon.js');
 const FX = JSON.parse(
   fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'gdacs-tc.json'), 'utf8'),
 );

@@ -6,8 +6,8 @@ const fs = require('node:fs');
 const http = require('node:http');
 const os = require('node:os');
 const path = require('node:path');
-const muse = require('../../api/services/muse.js');
-const { ekstrakLokasi, muatDaerahPO } = require('../../api/services/muse-lokasi.js');
+const muse = require('../../api/_services/muse.js');
+const { ekstrakLokasi, muatDaerahPO } = require('../../api/_services/muse-lokasi.js');
 const {
   buatFixtureMuse,
   pasangCacheMuse,
@@ -656,7 +656,7 @@ const opsSegar = (dir, dunia, lebih = {}) => ({
   });
 
   /* --- (h) endpoint --- */
-  const server = require('../../api/server.js');
+  const server = require('../../api/_server.js');
   const fixtureFile = pasangCacheMuse();
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
   const base = `http://127.0.0.1:${server.address().port}`;

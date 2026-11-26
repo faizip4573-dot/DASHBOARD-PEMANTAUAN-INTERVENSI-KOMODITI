@@ -1,6 +1,6 @@
 'use strict';
 // Harga Cadangan PSI: baca cache data/processed/psi-bulanan.json (ditulis oleh npm run psi:ambil) dan kira
-// cadangan BELIAN (ladang) dan JUALAN (borong) untuk satu PO + varieti dengan api/services/psi-kira.js.
+// cadangan BELIAN (ladang) dan JUALAN (borong) untuk satu PO + varieti dengan api/_services/psi-kira.js.
 const path = require('node:path');
 const util = require('./util-rangkaian.js');
 const kira = require('./harga-db-kira.js');

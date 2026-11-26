@@ -1,8 +1,8 @@
 'use strict';
-// Smoke test: muat halaman melalui api/server.js, laporkan ralat konsol, ralat JS, permintaan gagal dan pelanggaran CSP.
+// Smoke test: muat halaman melalui api/_server.js, laporkan ralat konsol, ralat JS, permintaan gagal dan pelanggaran CSP.
 // Jalankan dari root: node tests/frontend/smoke.js
 const path = require('node:path');
-const server = require('../../api/server.js');
+const server = require('../../api/_server.js');
 require('../helpers/banjir-fixture.js').pasangSemuaCache(); // cuaca, banjir dan IPU deterministik, tidak bergantung pada cache tempatan
 const puppeteer = require(
   path.resolve(__dirname, '../../.agents/tasks/bt/node_modules/puppeteer-core'),

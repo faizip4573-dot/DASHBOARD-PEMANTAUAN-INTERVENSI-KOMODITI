@@ -5,7 +5,7 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
-const cuaca = require('../../api/services/cuaca.js');
+const cuaca = require('../../api/_services/cuaca.js');
 const { buatFixture, pasangCache } = require('../helpers/cuaca-fixture.js');
 
 function get(base, p) {
@@ -162,7 +162,7 @@ function get(base, p) {
   });
 
   // --- API ---
-  const server = require('../../api/server.js');
+  const server = require('../../api/_server.js');
   const fixtureFile = pasangCache();
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
   const base = `http://127.0.0.1:${server.address().port}`;

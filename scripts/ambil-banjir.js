@@ -1,6 +1,6 @@
 'use strict';
 // Ambil data banjir (JPS Malaysia + JPS Selangor) dan tulis cache. Jalankan: npm run banjir:ambil
-const { segar } = require('../api/services/banjir.js');
+const { segar } = require('../api/_services/banjir.js');
 
 const baris = (nama, s) =>
   `${nama}: ${s.status}${s.bilangan != null ? ' (' + s.bilangan + ')' : ''}${s.mesej ? ' - ' + s.mesej : ''}`;

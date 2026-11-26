@@ -1,6 +1,6 @@
 'use strict';
 // DB Harga: logik tulen (tiada rangkaian, tiada fail). Minggu ISO, agregasi, pemetaan PO, peraturan alarm dan
-// pembina respons untuk /api/harga. Dikongsi oleh api/services/harga-db.js dan ujian.
+// pembina respons untuk /api/harga. Dikongsi oleh api/_services/harga-db.js dan ujian.
 
 const komoditiDiliputi = require('./komoditi-diliputi.js');
 const pemetaanPo = require('./pemetaan-po.js');

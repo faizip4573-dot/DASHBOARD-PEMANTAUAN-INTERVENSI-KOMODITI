@@ -36,7 +36,7 @@ const json = (r) => JSON.parse(r.body);
       asalLog[k](...a);
     };
   });
-  const server = require('../../api/server.js');
+  const server = require('../../api/_server.js');
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
   const base = `http://127.0.0.1:${server.address().port}`;
   const semuaBadan = [];

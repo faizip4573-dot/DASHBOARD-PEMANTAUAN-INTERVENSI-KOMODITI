@@ -7,7 +7,7 @@ try {
 } catch {
   /* .env tiada */
 }
-const grid = require('../api/services/grid-cuaca.js');
+const grid = require('../api/_services/grid-cuaca.js');
 grid
   .segar()
   .then((r) => {

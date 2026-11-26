@@ -1,9 +1,9 @@
 'use strict';
 // Cache grid cuaca sintetik tetapi deterministik untuk ujian API dan frontend (bukan data sebenar).
-// Susun atur sama dengan api/services/grid-cuaca.js: [jam][baris][lajur], baris 0 = lat 0.5, lajur 0 = lon 99.5.
+// Susun atur sama dengan api/_services/grid-cuaca.js: [jam][baris][lajur], baris 0 = lat 0.5, lajur 0 = lon 99.5.
 const fs = require('node:fs');
 const path = require('node:path');
-const grid = require('../../api/services/grid-cuaca.js');
+const grid = require('../../api/_services/grid-cuaca.js');
 
 const NX = 41;
 const NY = 15;

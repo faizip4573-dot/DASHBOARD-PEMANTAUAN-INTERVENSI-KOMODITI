@@ -70,7 +70,7 @@ jobs:
         run: npm run siklon:ambil
         continue-on-error: true
       - name: Amaran rasmi (data.gov.my)
-        run: node -e "require('./api/services/amaran-datagov.js').segar().then(() => console.log('Amaran data.gov.my dikemas kini'))"
+        run: node -e "require('./api/_services/amaran-datagov.js').segar().then(() => console.log('Amaran data.gov.my dikemas kini'))"
         continue-on-error: true
       # Grid cuaca berat (kuota Open-Meteo): hanya setiap 6 jam atau bila dijalankan manual/push
       - name: Grid cuaca (Open-Meteo)

@@ -4,7 +4,7 @@
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const muse = require('../../api/services/muse.js');
+const muse = require('../../api/_services/muse.js');
 const DIR = path.join(__dirname, '..', 'fixtures', 'muse');
 const bacaFixture = (n) => JSON.parse(fs.readFileSync(path.join(DIR, n), 'utf8'));
 const julat = (a, b) => {
